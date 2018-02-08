@@ -16,7 +16,7 @@ public class StockInfoDto {
     private String productId;
 
     /**
-     * The map of stock information with locations and quantities available in those locations.
+     * The total stock available.
      */
-    private Integer stockInfo;
+    private Integer stockTotal;
 }

@@ -6,9 +6,9 @@ import com.fortech.stockservice.repository.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Stock service.
@@ -46,7 +46,7 @@ public class StockService {
      * Gets Stock info for a given product id.
      *
      * @param productId - the product id.
-     * @return - map with locations and quantities.
+     * @return - StockInfo dto.
      */
     public StockInfoDto getStockInfoByProductId(String productId) {
         StockInfoDto stockDto = new StockInfoDto();
@@ -55,11 +55,51 @@ public class StockService {
         List<Stock> stocks = stockRepository.findAllByProductIdAndQuantityIsGreaterThan(productId, 0);
         int count = 0;
         for (Stock stock : stocks) {
-            count = +stock.getQuantity();
+            count += stock.getQuantity();
         }
-        stockDto.setStockInfo(count);
+        stockDto.setStockTotal(count);
         return stockDto;
 
     }
 
+    public int getDaysToWarehouse(String productId, int howMany) {
+        int result = 0;
+
+        List<Stock> stocks = stockRepository.findAllByProductIdAndQuantityIsGreaterThan(productId, 0);
+        int totalStock = 0;
+        for (Stock stock : stocks) {
+            totalStock += stock.getQuantity();
+        }
+
+        if (howMany <= totalStock) {
+            Collections.sort(stocks, new Comparator<Stock>() {
+                @Override
+                public int compare(Stock o1, Stock o2) {
+                    int o1Distance = o1.getLocation().getDistance();
+                    int o2Distance = o2.getLocation().getDistance();
+                    return Integer.compare(o1Distance, o2Distance);
+                }
+            });
+
+            int stockIteratorCount = 0;
+            int requiredStock = howMany;
+            int remainingStock = totalStock;
+            while (remainingStock > 0 && requiredStock > 0 && stockIteratorCount < stocks.size()) {
+                Stock currentStock = stocks.get(stockIteratorCount);
+                int currentStockQuantity = currentStock.getQuantity();
+                int quantityTakenFromCurrentStock = currentStockQuantity > requiredStock ? requiredStock : currentStockQuantity;
+                requiredStock -= quantityTakenFromCurrentStock;
+                remainingStock -= quantityTakenFromCurrentStock;
+
+                if (result < currentStock.getLocation().getDistance()) {
+                    result = currentStock.getLocation().getDistance();
+                }
+                stockIteratorCount++;
+            }
+        } else {
+            return -1;
+        }
+
+        return result;
+    }
 }

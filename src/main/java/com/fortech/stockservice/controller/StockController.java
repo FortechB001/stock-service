@@ -59,7 +59,15 @@ public class StockController {
      * @param quantity  - the quantity.
      */
     @PostMapping("/add")
-    public void addStock(@RequestParam(name = "productId") String productId, @RequestParam(name = "location") String location, @RequestParam(name = "quantity") Integer quantity) {
+    public void addStock(@RequestParam(name = "productId") String productId,
+                         @RequestParam(name = "location") String location,
+                         @RequestParam(name = "quantity") Integer quantity) {
         stockService.addStock(productId, location, quantity);
+    }
+
+    @GetMapping(value = "/when")
+    public Integer getDaysToWarehouse(@RequestParam(name = "productId") String productId,
+                                      @RequestParam(name = "howMany") Integer howMany) {
+      return  stockService.getDaysToWarehouse(productId, howMany);
     }
 }

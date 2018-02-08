@@ -27,10 +27,10 @@ public class Stock {
     public enum Location {
         DE("Deutchland", 3),
         UK("United Kingdom", 4),
-        FR("France", 2),
-        BE("Belgium", 2),
-        HU("Hungary", 1),
-        RO("Romania", 0);
+        FR("France", 3),
+        BE("Belgium", 3),
+        HU("Hungary", 2),
+        RO("Romania", 1);
 
         private String country;
         private int distance;
