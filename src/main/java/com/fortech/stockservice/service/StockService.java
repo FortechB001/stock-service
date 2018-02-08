@@ -53,11 +53,11 @@ public class StockService {
         stockDto.setProductId(productId);
 
         List<Stock> stocks = stockRepository.findAllByProductIdAndQuantityIsGreaterThan(productId, 0);
-        Map<String, Integer> stockInfo = new HashMap<>();
+        int count = 0;
         for (Stock stock : stocks) {
-            stockInfo.put(stock.getLocation().getCountry(), stock.getQuantity());
+            count = +stock.getQuantity();
         }
-        stockDto.setStockInfo(stockInfo);
+        stockDto.setStockInfo(count);
         return stockDto;
 
     }
