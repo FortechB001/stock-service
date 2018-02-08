@@ -19,10 +19,12 @@ public class Stock {
     @NonNull
     private Location location;
 
+    @NonNull
+    private Integer quantity;
 
     @Getter
     @AllArgsConstructor
-    private enum Location {
+    public enum Location {
         DE("Deutchland", 3),
         UK("United Kingdom", 4),
         FR("France", 2),
