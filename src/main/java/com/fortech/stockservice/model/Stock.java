@@ -25,11 +25,11 @@ public class Stock {
     @Getter
     @AllArgsConstructor
     public enum Location {
-        DE("Deutchland", 3),
-        UK("United Kingdom", 4),
-        FR("France", 3),
-        BE("Belgium", 3),
-        HU("Hungary", 2),
+        SUPPLIER_1("From Deutchland", 3),
+        SUPPLIER_2("United Kingdom", 4),
+        SUPPLIER_3("France", 3),
+        SUPPLIER_4("Belgium", 3),
+        SUPPLIER_5("Hungary", 2),
         RO("Romania", 1);
 
         private String country;
