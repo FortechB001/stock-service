@@ -68,6 +68,6 @@ public class StockController {
     @GetMapping(value = "/when")
     public Integer getDaysToWarehouse(@RequestParam(name = "productId") String productId,
                                       @RequestParam(name = "howMany") Integer howMany) {
-      return  stockService.getDaysToWarehouse(productId, howMany);
+        return stockService.getDaysToWarehouse(productId, howMany);
     }
 }

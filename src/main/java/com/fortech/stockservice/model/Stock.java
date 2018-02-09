@@ -30,7 +30,7 @@ public class Stock {
         SUPPLIER_3("France", 3),
         SUPPLIER_4("Belgium", 3),
         SUPPLIER_5("Hungary", 2),
-        RO("Romania", 1);
+        SUPPLIER_6("Romania", 1);
 
         private String country;
         private int distance;
