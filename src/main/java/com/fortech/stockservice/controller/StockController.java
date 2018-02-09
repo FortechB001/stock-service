@@ -5,6 +5,7 @@ import com.fortech.stockservice.model.dto.StockInfoDto;
 import com.fortech.stockservice.repository.StockRepository;
 import com.fortech.stockservice.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 /**
  * Rest Controller for the Stock related requests.
  */
-@CrossOrigin(origins = {"http://localhost:8081", "http://localhost:8080"})
+@CrossOrigin(origins = {"http://localhost:8080"})
 @RestController
 @RequestMapping("/stock")
 public class StockController {
@@ -69,5 +70,16 @@ public class StockController {
     public Integer getDaysToWarehouse(@RequestParam(name = "productId") String productId,
                                       @RequestParam(name = "howMany") Integer howMany) {
         return stockService.getDaysToWarehouse(productId, howMany);
+    }
+
+    @PutMapping(value = "/update")
+    public ResponseEntity<?> removeFromStock(@RequestParam(name = "productId") String productId,
+                                             @RequestParam(name = "howMany") Integer howMany) {
+
+        boolean removed = stockService.removeFromStock(productId, howMany);
+        if (removed) {
+            return ResponseEntity.accepted().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }

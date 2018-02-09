@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -42,6 +41,30 @@ public class StockService {
         }
     }
 
+    public boolean removeFromStock(String productId, Integer requestQuantity) {
+
+        List<Stock> stocks = stockRepository.findAllByProductIdAndQuantityIsGreaterThan(productId, requestQuantity);
+
+        stocks.sort((o1, o2) -> {
+            int o1Distance = o1.getLocation().getDistance();
+            int o2Distance = o2.getLocation().getDistance();
+            return Integer.compare(o1Distance, o2Distance);
+        });
+        for (Stock stock : stocks) {
+            if (requestQuantity > 0) {
+                int stockQuantity = stock.getQuantity();
+                if (stockQuantity >= requestQuantity) {
+                    stock.setQuantity(stockQuantity - requestQuantity);
+                    requestQuantity = 0;
+                } else {
+                    stock.setQuantity(requestQuantity - stockQuantity);
+                    requestQuantity -= stockQuantity;
+                }
+            }
+        }
+        return requestQuantity == 0 && !stockRepository.save(stocks).isEmpty();
+    }
+
     /**
      * Gets Stock info for a given product id.
      *
@@ -72,13 +95,10 @@ public class StockService {
         }
 
         if (howMany <= totalStock) {
-            Collections.sort(stocks, new Comparator<Stock>() {
-                @Override
-                public int compare(Stock o1, Stock o2) {
-                    int o1Distance = o1.getLocation().getDistance();
-                    int o2Distance = o2.getLocation().getDistance();
-                    return Integer.compare(o1Distance, o2Distance);
-                }
+            Collections.sort(stocks, (o1, o2) -> {
+                int o1Distance = o1.getLocation().getDistance();
+                int o2Distance = o2.getLocation().getDistance();
+                return Integer.compare(o1Distance, o2Distance);
             });
 
             int stockIteratorCount = 0;
