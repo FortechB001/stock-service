@@ -30,7 +30,6 @@ public class StockController {
     @Autowired
     private StockService stockService;
 
-
     /**
      * Displays all stocks.
      *
@@ -53,13 +52,13 @@ public class StockController {
     }
 
     /**
-     * Adds a new stock.
+     * Update stock.
      *
      * @param productId - the productId
      * @param location  - the location.
      * @param quantity  - the quantity.
      */
-    @PostMapping("/add")
+    @PutMapping("/add")
     public void addStock(@RequestParam(name = "productId") String productId,
                          @RequestParam(name = "location") String location,
                          @RequestParam(name = "quantity") Integer quantity) {
@@ -79,6 +78,20 @@ public class StockController {
         boolean removed = stockService.removeFromStock(productId, howMany);
         if (removed) {
             return ResponseEntity.accepted().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping(value = "/suppliers")
+    public Stock.Location[] getAllSuppliers() {
+        return Stock.Location.values();
+    }
+
+    @DeleteMapping(path = "/delete")
+    public ResponseEntity<?> deleteStockForAProduct(@RequestParam(name = "productId") String productId) {
+
+        if (stockService.deleteStockForAProduct(productId)) {
+            return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
     }

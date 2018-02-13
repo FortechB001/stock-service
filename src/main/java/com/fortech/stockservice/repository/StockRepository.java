@@ -22,6 +22,14 @@ public interface StockRepository extends MongoRepository<Stock, String> {
     List<Stock> findAllByProductIdAndQuantityIsGreaterThan(String productId, Integer quantity);
 
     /**
+     * Get all Stock by Product Id
+     *
+     * @param productId - the productId.
+     * @return
+     */
+    List<Stock> findAllByProductId(String productId);
+
+    /**
      * Gets all the stock info by productIdAndLocation.
      *
      * @param productId - the productId.
@@ -29,4 +37,12 @@ public interface StockRepository extends MongoRepository<Stock, String> {
      * @return - list of stock entities.
      */
     List<Stock> findAllByProductIdAndLocation(String productId, String location);
+
+    /**
+     * Delete al stock for a product
+     *
+     * @param productId - product Id
+     * @return true / false
+     */
+    Long deleteAllByProductId(String productId);
 }

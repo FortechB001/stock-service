@@ -36,14 +36,14 @@ public class StockService {
             Stock.Location loc = Stock.Location.valueOf(location);
             stockRepository.save(new Stock(productId, loc, quantity));
         } else {
-            stocks.get(0).setQuantity(stocks.get(0).getQuantity() + quantity);
+            stocks.get(0).setQuantity(quantity);
             stockRepository.save(stocks.get(0));
         }
     }
 
     public boolean removeFromStock(String productId, Integer requestQuantity) {
 
-        List<Stock> stocks = stockRepository.findAllByProductIdAndQuantityIsGreaterThan(productId, requestQuantity);
+        List<Stock> stocks = stockRepository.findAllByProductId(productId);
 
         stocks.sort((o1, o2) -> {
             int o1Distance = o1.getLocation().getDistance();
@@ -51,13 +51,13 @@ public class StockService {
             return Integer.compare(o1Distance, o2Distance);
         });
         for (Stock stock : stocks) {
-            if (requestQuantity > 0) {
+            if (requestQuantity > 0 && stock.getQuantity() > 0) {
                 int stockQuantity = stock.getQuantity();
                 if (stockQuantity >= requestQuantity) {
                     stock.setQuantity(stockQuantity - requestQuantity);
                     requestQuantity = 0;
                 } else {
-                    stock.setQuantity(requestQuantity - stockQuantity);
+                    stock.setQuantity(0);
                     requestQuantity -= stockQuantity;
                 }
             }
@@ -121,5 +121,19 @@ public class StockService {
         }
 
         return result;
+    }
+
+    /**
+     * Delete all stock for a product
+     *
+     * @param productId - product id
+     */
+    public boolean deleteStockForAProduct(String productId) {
+        try {
+            stockRepository.deleteAllByProductId(productId);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

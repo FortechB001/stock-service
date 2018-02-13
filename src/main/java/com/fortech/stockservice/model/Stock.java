@@ -25,12 +25,12 @@ public class Stock {
     @Getter
     @AllArgsConstructor
     public enum Location {
-        SUPPLIER_1("From Deutchland", 3),
-        SUPPLIER_2("United Kingdom", 4),
-        SUPPLIER_3("France", 3),
-        SUPPLIER_4("Belgium", 3),
-        SUPPLIER_5("Hungary", 2),
-        SUPPLIER_6("Romania", 1);
+        SUPPLIER_1("From Germany", 3),
+        SUPPLIER_2("From United Kingdom", 4),
+        SUPPLIER_3("From France", 3),
+        SUPPLIER_4("From Belgium", 3),
+        SUPPLIER_5("From Hungary", 2),
+        SUPPLIER_6("From Romania", 1);
 
         private String country;
         private int distance;
