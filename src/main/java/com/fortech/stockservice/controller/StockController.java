@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Rest Controller for the Stock related requests.
  */
-@CrossOrigin(origins = {"http://localhost:8080"})
+//@CrossOrigin(origins = {"http://localhost:8081"})
 @RestController
 @RequestMapping("/stock")
 public class StockController {
