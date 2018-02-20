@@ -1,7 +1,7 @@
 spring:
   application:
-    name: stock-service
-
+#    name: stock-service
+    name: STOCK-SERV
 server:
   port: 8084
 
