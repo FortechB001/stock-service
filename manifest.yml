@@ -1,0 +1,7 @@
+---
+applications:
+- name: spring-boot-fortech-reserch-stock-service
+  path: target/stock-service-0.0.1-SNAPSHOT.jar
+  domanin: cfapps.io
+  memory: 680m
+  instances: 1
